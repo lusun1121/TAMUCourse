@@ -1,0 +1,56 @@
+setwd("D:/Google Drive/2021_SPRING/STAT611/hw")
+
+library(fitdistrplus)
+serving = read.csv("LoadLife.csv",header=F)
+serving = serving[,]
+#######################################################
+fit_n <- fitdist(serving,"norm")
+rbind(fit_n$estimate)
+png('norm.png')
+plot.legend <- c("norm")
+opar <- par(no.readonly=TRUE)
+par(mfrow=c(2,2))
+denscomp(list(fit_n), legendtext = plot.legend)
+cdfcomp (list(fit_n), legendtext = plot.legend)
+qqcomp  (list(fit_n), legendtext = plot.legend)
+ppcomp  (list(fit_n), legendtext = plot.legend)
+dev.off()
+
+
+#######################################################
+fit_w  <- fitdist(serving, "weibull")
+rbind(fit_w$estimate)
+png('weibull.png')
+plot.legend <- c("weibull")
+opar <- par(no.readonly=TRUE)
+par(mfrow=c(2,2))
+denscomp(list(fit_w), legendtext = plot.legend)
+cdfcomp (list(fit_w), legendtext = plot.legend)
+qqcomp  (list(fit_w), legendtext = plot.legend)
+ppcomp  (list(fit_w), legendtext = plot.legend)
+dev.off()
+
+###########################################################
+rk = (rank(serving,ties.method = "first")-0.5)/length(serving)
+
+theo_norm = qnorm(rk, mean = fit_n$estimate[1], sd = fit_n$estimate[2], 
+                  lower.tail = TRUE, log.p = FALSE)
+
+x_12 = summary(serving)[3]
+x_34 = summary(serving)[5]
+a = log(2)/(log(x_34)-log(x_12))
+b = x_12/((log(2))^(1/a))
+theo_weilbull = qweibull(rk, shape = a, scale = b, lower.tail = TRUE, log.p = FALSE)
+
+png('compare.png')
+par(pin = c(4,2.75))
+plot(theo_norm,serving,xlab = "Theoretical quantiles",ylab="Empirical quantiles",
+     col="red",main = "Q-Q plot",xlim = c(-20,500),ylim = c(20,500))
+lines(0:500, 0:500, col="black")
+par(new=TRUE)
+plot(theo_weilbull,serving,col="green",new= TRUE,axes = FALSE, xlab = "Theoretical quantiles",
+     ylab="Empirical quantiles",xlim = c(-20,500),ylim = c(20,500),pch=c(3))
+legend("bottomright", inset=.05, title="Distribution Type", c("Norm","Weibull"),
+       pch=c(1, 3), col=c("red", "green"))
+
+dev.off()
