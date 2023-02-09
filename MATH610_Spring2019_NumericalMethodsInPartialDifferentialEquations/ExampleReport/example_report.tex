@@ -1,0 +1,116 @@
+\documentclass[11pt]{article}
+
+\hoffset        2mm 
+\voffset        -15mm
+\oddsidemargin  0mm
+\topmargin      0.5in
+\textwidth      6in
+\textheight     9in
+
+\usepackage{graphicx,amsmath, amssymb, amsthm, amsfonts}
+
+\input{include} % handy file (include.tex) for all your special commands.  must be in same directory as this .tex file
+\graphicspath{{./Figures/}} % folder that will contain all your figures that you want to include.  Must be in same directory as this .tex file
+
+
+
+\begin{document}
+	
+	\ifpdf
+	\DeclareGraphicsExtensions{.pdf, .jpg, .tif, .png}
+	\else
+	\DeclareGraphicsExtensions{.eps, .jpg, .png}
+	\fi
+
+\begin{titlepage}
+
+\vspace*{55mm}
+\begin{center}
+{\huge MATH610-600}\\[1cm]
+{\em \huge Programming Assignment \#1}\\[70mm]
+{\large February 1, 2012} \\[15mm]
+\end{center}
+
+\begin{flushright}
+{\LARGE YOUR NAME}
+\end{flushright}
+
+\vfill
+
+\end{titlepage}
+
+\newpage
+\section{Problem Specifications}
+In this section you should describe the problems in this particular assignment.
+I would use a separate subsection for describing each problem.
+\subsection{Problem 1 (Deflection of a uniformly loaded plate)}
+Here we describe what the first problem in this assignment asks us to do.
+\subsection{Problem 2 (...)}
+Here we describe what the second problem in this assignment asks us to do.
+
+\section{Preliminaries}
+In this section you should describe your approach to solving the problems
+in this example. You do NOT need to include the source code for your 
+programs in your report. If you feel that you should include some \textbf{small}
+parts of the code in order to explain things better, you may do it like
+this:
+\begin{verbatim}
+//This function calculates the factorial (n!) of an integer n>=0
+//using a 'for' loop in C++
+unsigned int factorial(unsigned int n)
+{
+  unsigned int i, result = 1;
+  
+  for(i=1; i<=n; i++)
+    result *= i;
+
+  return result;
+}
+\end{verbatim}
+
+To show a table of results that demonstrates some order of convergence,  you can set up a table like Table~\ref{table:ErrorRatesForTimeDependentProblem} that will display the results in an easy to read format
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|} 
+	\hline
+cycle & dt & n\_dt's & n\_dofs & h & $\|u_h-u\|_{L^{\infty}([0,T];L^2(\Omega))}$ & $L^{\infty}([0,T];L^2(\Omega))$ rate \\ \hline
+     0 & 2.5000e-03   &   80  &  1089  &  6.2500e-02   &  4.4741e-04     &   0.0000 \\
+     1 & 1.2500e-03   &  160  &  4225  &  3.1250e-02   &  1.0195e-04     &   2.1337 \\
+     2 & 6.2500e-04   &  320  & 16641  &  1.5625e-02   &  2.4712e-05     &   2.0447 \\
+     3 & 3.1250e-04   &  640  & 66049  &  7.8125e-03   &  6.0788e-06     &   2.0233 \\ \hline
+\end{tabular}
+\end{center}
+	\caption{Time Convergence results using Runge-Kutta 2 (RK2) algorithm for time discretization using the $\|u_h-u\|_{L^{\infty}([0,T];L^2(\Omega))} = \max_{t\in[0,T]} \|u_h(t)-u(t)\|_{L^2(\Omega)}$ norm.  We expect to see order 2 convergence for small enough mesh size which is confirmed above by experiment.}
+	\label{table:ErrorRatesForTimeDependentProblem}
+\end{table}
+
+
+To insert a figure we can put it next and reference it as Figure~\ref{fig:conv_rates_LinfL2} like this.
+\begin{figure}[h!]
+	\centering
+		 \includegraphics[scale=1.0]{levelset_convergence_rate}
+	 	\caption{The log-log plot of our approximation of the integral around $\Gamma$ by using a smeared Dirac delta function of width h.  The reproted values are the errors for perimeter or length $|\Gamma|$ given by $|\int_{\Gamma}ds - \int_{\Omega}\delta_{h}|\nabla\varphi|d\x|$ and the errors for the integral of a function $f(\x)$ defined on $\Gamma$ given by $|\int_{\Gamma}fds - \int_{\Omega}f(\x)\delta_{h}(\x)|\nabla\varphi|d\x|$ plotted against the number of degrees of freedom of our system.  For uniform mesh, we have $h \approx 1/N^d$ where we have N degrees of freedom.}
+  \label{fig:conv_rates_LinfL2}
+\end{figure}
+
+\newpage
+
+\section{Problem 1(...)}
+Give the results and a small discussion of the results that you obtained.
+
+{\bf NOTE:} If you prefer, you may do so in 
+a separate subsection for each particular problem.
+
+\section{Problem 2 (...)}
+Give the results and a small discussion of the results that you obtained.
+
+\end{document}
+
+
+
+
+
+
+
+
