@@ -1,0 +1,166 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,amsthm,epsfig,epstopdf,titling,url,array}
+\usepackage{graphicx,amsmath, amssymb, amsthm, amsfonts}
+\usepackage{IEEEtrantools}
+\usepackage{cleveref}
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem*{cor}{Corollary}
+\newtheorem*{prf}{proof}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{conj}{Conjecture}[section]
+\newtheorem{exmp}{Example}[section]
+
+\theoremstyle{remark}
+\newtheorem*{rem}{Remark}
+\newtheorem*{note}{Note}
+\title{$\S$8.1 Markov Inequality}
+%\author{Lu Sun }
+\date{April 03, 2019}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\begin{document}
+
+\maketitle
+
+\section{Block Functions}
+
+\begin{defn}
+A analytic function $g(z)$ on $\mathbb{D}$ is called a \textbf{Block Function} if $$||g||_{B}=\sup_{z\in\mathbb{D}}|g'(z)|(1-|z|^2)<\infty$$
+\end{defn}
+
+\textbf{Remark}
+\begin{itemize}
+    \item $||g||_{B}$ is called Block norm.
+    \item If $T(z)=\lambda\frac{z+a}{1+\Bar{a}z},a\in \mathbb{D},\lambda\in\partial\mathbb{D}$, then $||g\circ T||_B=||g||_B$.
+    \item If $Re(g)$ is bounded, then $g\in B$, here $B$ is the set of Block Functions.
+\end{itemize}
+
+\begin{thm}
+Let $g(z)$ be analytic on $\mathbb{D}$. Then $g\in B$ if and only if $g$ is Lipschitz continuous as a map from hyperbolic metric on $\mathbb{D}$ to the Euclidean metric on $\mathbb{D}$. Namely,
+$$||g||_B=\sup_{z,w\in\mathbb{D}}\frac{|g(z)-g(w)|}{\rho(z,w)}$$
+$$\rho_{\mathbb{D}}(z_1,z_2)=\inf\int^{z_2}_{z_1}\frac{|dz|}{1-|z|^2}$$
+\end{thm}
+
+\section{Law of Herated Logarithm}
+In this section, law of Herated logarithm for Block functions is shown:
+\begin{thm}\textbf{(Markov)} $\exists C>0$, $s.t.$ whenever $g\in B$ on $\mathbb{D}$ $a.e.$ on $\partial\mathbb{D}$,
+$$\limsup_{r\to{1}}\frac{|g(re^{i\theta})|}{\sqrt{\log(\frac{1}{1-r})\log\log\log(\frac{1}{1-r})}}\leq C||g||_B$$
+\end{thm}
+\begin{thm}
+If $||g||_B\leq1$ and if $\exists \beta >0$ and $M<\infty$, $s.t.$ for all $z_0\in\mathbb{D}$, 
+
+\begin{IEEEeqnarray*}{rCl}
+ \sup_{\{z:\rho(z,z_0)<M\}}(1-|z|^2)|g'(z)|
+& \geq &\beta, \IEEEyessubnumber*
+\end{IEEEeqnarray*}
+then $a.e.$ on $\partial\mathbb{D}$
+$$\limsup_{r\to{1}}\frac{Re\big(g(re^{i\theta})\big)}{\sqrt{\log(\frac{1}{1-r})\log\log\log(\frac{1}{1-r})}}\geq C(\beta,M)>0$$
+\end{thm}
+\begin{thm}
+\textbf{Hardy-Littlewood maximal theorem}(H.L.theorem):
+
+If $f\in L^p(R^n)$ for $n> 1, 1<p\leq\infty$, then $\exists$ a constant $C_{p,n}>0$, $s.t.$ $$\Bigg|\Bigg|\sup_{r>0}\Big|\frac{1}{|B(x,r)|}\int_{B(x,r)}f(y)dy\Big|\Bigg|\Bigg|_{L^p(R^n)}\leq C_{p,n}||f||_{L^p(R^n)}.$$ 
+\end{thm}
+
+\textbf{Remark}
+\begin{itemize}
+    \item If conformal map $\psi$ mapping $\mathbb{D}$ to the domain $\Omega$ inside the snowflake curve, then $(0a)$ holds for the global function $g=\log(\psi')$ and vice versa.
+    \item If $g(z)=\sum_{n=1}^{\infty}z^{2^n}$, and $g_N(z)=\sum_{n=1}^{N}z^{2^n}$ is the partial sum of $g(z)$ with $\limsup_{r\to 1}\frac{g_N(re^{i\theta})}{\sqrt{N\log\log N}}=1$. Then,
+    $$\limsup_{r\to{1}}\frac{|g(re^{i\theta})|}{\sqrt{\log(\frac{1}{1-r})\log\log\log(\frac{1}{1-r})}}=1$$
+\end{itemize}
+\begin{prf} Proof for Theorem 2.1.
+
+WLOG: $g(0)=0$ and $||g||_B=1$.
+
+Let $p\in\mathbb{N}$ and consider 
+$$I_p(r)=\frac{1}{2\pi}\int^{2\pi}_{0}|g(re^{i\theta})|^{2p}d\theta,$$
+then,
+$$\frac{d}{dr}\big(rI_p'(r)\big)=\frac{4p^2r}{2\pi}\int^{2\pi}_{0}|g(re^{i\theta})|^{2p-2}*|g'(re^{i\theta})|^2d\theta.$$
+
+By Hardy's inequality:
+\begin{equation}
+    I_p(r)\leq p!\big(\log(\frac{1}{1-r^2})\big)^p\leq p!\big(\log(\frac{1}{1-r^2})\big)^p,
+\end{equation}
+we have:
+\begin{equation*}
+  \begin{array}{lcl}
+       \frac{d}{dr}\big(rI_p'(r)\big)&=&\frac{4p^2r}{2\pi}\int^{2\pi}_{0}|g(re^{i\theta})|^{2p-2}*|g'(re^{i\theta})|^2d\theta  \\
+       &\overset{By\ ||g||_B=1}{\leq}& \frac{4p^2r}{(1-r)^2}I_{p-1}(r)\\
+                     &\overset{By\ (1)}{\leq}& \frac{4pp!r}{(1-r^2)^2}\big(\log\frac{1}{1-r^2})^{p-1}\big)\\
+              &\leq& p!\frac{d}{dr}\big(r\frac{d}{dr}(\log\frac{1}{1-r^2})^p\big)\\
+  \end{array}  
+\end{equation*}
+by ind assumption integrating both sides two times yields $(1)$.
+
+Applying H.L.theorem to $|g(re^{i\theta})|^p\in L^2$ with $g^*_r(e^{i\theta})=\sup_{\rho<r}|g(\rho e^{i\theta})|$, we get:
+\begin{equation}
+    \frac{1}{2\pi}\int^{2\pi}_{0}|g_r^*(e^{i\theta})|^{2p}d\theta\leq Cp!\big(\log\frac{1}{1-r}\big)^p.
+\end{equation}
+
+Let $\alpha>1$ and $A_p(r)=\frac{1}{1-r}\frac{1}{\big(\log\frac{1}{1-r}\big)^{p+1}}\frac{1}{\big(\log\log\frac{1}{1-r}\big)^{\alpha}}$, then we get:
+\begin{equation}
+    \int^{1}_{r}A_p(s)ds\geq\frac{C}{p}\frac{1}{\big(\log\frac{1}{1-r}\big)^{p+1}}\frac{1}{\big(\log\log\frac{1}{1-r}\big)^{\alpha}}.
+\end{equation}
+
+Consider:
+\begin{equation}
+    \begin{array}{lcl}
+         \int^{1}_rA_p(s)
+         \int^{2\pi}_{0}|g_r^*(e^{i\theta})|^{2p}d\theta
+         ds
+         &\overset{By(2)\ \&\ def\ of\ A_p(z)}{\leq}&
+         Cp!\int^1_r\frac{1}{\big(\log\log\frac{1}{1-s}\big)^{\alpha}}\frac{1}{\log\frac{1}{1-s}}\frac{ds}{1-s}\\
+         &\leq&C_{\alpha}p! 
+    \end{array}
+\end{equation}
+
+Let $E_p:=\{\theta:\int^1_rA_p(s)|g_s^*(e^{i\theta})|^{2p}ds>C_{\alpha}p^2p!\}$. By Chebyshev and Fubini, we have $|E_p|\leq \frac{1}{p^2}$. If $\theta\notin \cup_{n>p}E_n$, then
+\begin{equation}
+    \begin{array}{lcl}
+        |g(re^{i\theta})|^{2p} &\leq&\frac{\int^1_rA_p(s)|g^*_s(e^{i\theta})|^{2p}ds}{\int^1_rA_p(s)ds}  \\
+         &\overset{By\ (3)\ and\ E_p}{\leq}&C_{\alpha}p^2p!\frac{p(\log\frac{1}{1-r})^p(\log\log\frac{1}{1-r})^{\alpha}}{C} 
+    \end{array}
+\end{equation}
+
+By (5) we have:
+\begin{equation}
+    \frac{|g(re^{i\theta})|}{\sqrt{\log(\frac{1}{1-r})\log\log\log(\frac{1}{1-r})}}
+    \leq
+    \frac{C^{-\frac{1}{2p}}C_{\alpha}^{-\frac{1}{2p}}p^{\frac{3}{2p}}(p!)^{\frac{1}{2p}}(\log\log\frac{1}{1-r})^{\frac{\alpha}{2p}}}{\sqrt{\log\log\log\frac{1}{1-r}}}=(*)
+\end{equation}
+
+By stirling's formula:
+$$p!\sim \sqrt{2\pi p}\big(\frac{p}{e}\big)^p,$$
+and setting $p=\log\log\log\frac{1}{1-r}$, we have
+
+\begin{equation}
+\begin{array}{lcl}
+    (*) & =& \frac{
+          C^{-\frac{1}{2p}}
+          C_{\alpha}^{-\frac{1}{2p}}
+          p^{\frac{3}{2p}}
+        \big(
+          \sqrt{2\pi p}
+          (\frac{p}{e})^p
+        \big)^{\frac{1}{2p}}
+          (e^p)^{\frac{\alpha}{2p}}
+          }
+          {\sqrt{p}} \\
+     &=& \big(\frac{\sqrt{2\pi}}{CC_{\alpha}}\big)^{\frac{1}{2\alpha}}
+           p^{\frac{3}{2p}}(\sqrt{e})^{\alpha-1}\sim(\sqrt{e})^{\alpha-1}
+\end{array}
+           \end{equation}
+With $\alpha>1$, $||g||_B=1$, we get the constant with $C=1,|E_p|<\frac{1}{2p}\to 0.$ Finally, by equation $(6)\ (7)$, we get the Markov inequality in Theorem 2.1.
+
+\end{prf}
+
+\end{document}
