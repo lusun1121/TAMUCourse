@@ -1,0 +1,407 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <ctime>
+
+const size_t VERT_SIZE = 5000;
+
+typedef struct{
+	int index;
+	int degree;
+}vertDeg;
+
+typedef struct{
+	int v1;
+	int v2;
+	int wt;
+}edge;
+
+bool comp(vertDeg a, vertDeg b)
+{
+	return a.degree > b.degree;
+}
+
+bool edgecomp(edge a, edge b)
+{
+	return a.wt > b.wt;
+}
+
+void constructGraph1(std::vector<int>& G, std::vector<edge>& E)
+{
+	std::fill(G.begin(), G.end(), -1);
+	for (int i = 0; i < VERT_SIZE; i++)
+		G[i*VERT_SIZE + i] = 0;
+
+	E.clear();
+	
+	std::vector<vertDeg> degrees(VERT_SIZE);
+	
+	for (int i = 0; i < degrees.size(); i++)
+	{
+		degrees[i].index = i;
+		degrees[i].degree = 6;
+	}
+
+	for (int i = 0; i < VERT_SIZE; i++)
+	{
+		int a, b;
+		a = rand() % VERT_SIZE;
+		b = rand() % VERT_SIZE;
+		if (a != b)
+		{
+			vertDeg temp = degrees[a];
+			degrees[a] = degrees[b];
+			degrees[b] = temp;
+		}
+	}
+
+	while (degrees[0].degree != 0)
+	{
+		int rd = rand() % VERT_SIZE;
+		if (degrees[rd].degree != degrees[0].degree)
+			rd = rand() % 6;
+		if (degrees[rd].degree == degrees[0].degree)
+		{
+			vertDeg temp = degrees[rd];
+			degrees[rd] = degrees[0];
+			degrees[0] = temp;
+		}
+		int deg = degrees[0].degree;
+		for (int i = 1; i <= deg; i++)
+		{
+			edge e;
+			e.v1 = degrees[0].index;
+			e.v2 = degrees[i].index;
+			e.wt = rand() % 100 + 1;
+			E.push_back(e);
+			G[e.v1*VERT_SIZE + e.v2] = G[e.v2*VERT_SIZE + e.v1] = e.wt;
+			degrees[i].degree--;
+		}
+		degrees[0].degree = 0;
+		std::sort(degrees.begin(), degrees.end(), comp);
+	}
+}
+
+void constructGraph2(std::vector<int>& G, std::vector<edge>& E)
+{
+	std::fill(G.begin(), G.end(), -1);
+	for (int i = 0; i < VERT_SIZE; i++)
+		G[i*VERT_SIZE + i] = 0;
+
+	E.clear();
+
+	for (int i = 0; i < VERT_SIZE; i++)
+		for (int j = i + 1; j < VERT_SIZE; j++)
+		{
+			if (!(rand() % 5))
+			{
+				edge e;
+				e.v1 = i;
+				e.v2 = j;
+				e.wt = rand() % 1000 + 1;
+				E.push_back(e);
+				G[i*VERT_SIZE + j] = G[j*VERT_SIZE + i] = e.wt;
+			}
+		}
+}
+
+int dijkstraNoHeap(const std::vector<int>& G, int s, int t)
+{
+	if (s == t)
+		return -1;
+
+	std::vector<int> status(VERT_SIZE);						//status of vertices: 0 for unseen, 1 for fringe, 2 for intree
+	std::fill(status.begin(), status.end(), 0);
+
+	std::vector<int> dad(VERT_SIZE);
+	std::fill(dad.begin(), dad.end(), -1);
+
+	std::vector<int> cap(VERT_SIZE);
+	std::fill(cap.begin(), cap.end(), 0);
+
+	status[s] = 2;
+
+	for (int j = 0; j < VERT_SIZE; j++)
+	{
+		if (G[s*VERT_SIZE + j] > 0)
+		{
+			status[j] = 1;
+			cap[j] = G[s*VERT_SIZE + j];
+			dad[j] = s;
+		}
+	}
+
+	while (status[t] != 2)
+	{
+		int maxcap = 0;
+		int maxcapidx = -1;
+		for (int i = 0; i < VERT_SIZE; i++)
+			if (status[i]==1 && cap[i]>maxcap)
+			{
+				maxcap = cap[i];
+				maxcapidx = i;
+			}
+		int v = maxcapidx;
+		status[v] = 2;
+		for (int w = 0; w < VERT_SIZE; w++)
+			if (G[v*VERT_SIZE + w] > 0)
+				if (status[w] == 0)
+				{
+					status[w] = 1;
+					dad[w] = v;
+					cap[w] = std::min(cap[v], G[v*VERT_SIZE + w]);
+				}
+				else if (status[w] == 1 && cap[w] < std::min(cap[v], G[v*VERT_SIZE + w]))
+				{
+					dad[w] = v;
+					cap[w] = std::min(cap[v], G[v*VERT_SIZE + w]);
+				}
+	}
+
+	return cap[t];
+}
+
+int heapMax(const std::vector<int>& heap)
+{
+	assert(heap.size() >= 2);
+	return heap[1];
+}
+
+void heapifyUp(std::vector<int>& heap, const std::vector<int>& value, std::vector<int>& fringe2heap, int idx)
+{
+	if (idx > 1)
+	{
+		if (value[heap[idx]] > value[heap[idx / 2]])
+		{
+			int temp = heap[idx / 2];
+			heap[idx / 2] = heap[idx];
+			heap[idx] = temp;
+
+			fringe2heap[heap[idx / 2]] = idx / 2;
+			fringe2heap[heap[idx]] = idx;
+
+			heapifyUp(heap, value, fringe2heap, idx / 2);
+		}
+	}
+}
+
+void heapifyDown(std::vector<int>& heap, const std::vector<int>& value, std::vector<int>& fringe2heap, int idx)
+{
+	if (idx * 2 >= heap.size())
+		return;
+
+	int childIdx = 2 * idx;
+	if (idx * 2 + 1 < heap.size())
+		if (value[heap[2 * idx + 1]] > value[heap[2 * idx]])
+			childIdx = 2 * idx + 1;
+
+	if (value[heap[childIdx]] > value[heap[idx]])
+	{
+		int temp = heap[childIdx];
+		heap[childIdx] = heap[idx];
+		heap[idx] = temp;
+
+		fringe2heap[heap[childIdx]] = childIdx;
+		fringe2heap[heap[idx]] = idx;
+
+		heapifyDown(heap, value, fringe2heap, childIdx);
+	}
+}
+
+void heapInsert(std::vector<int>& heap, const std::vector<int>& value, std::vector<int>& fringe2heap, int vert)
+{
+	fringe2heap[vert] = heap.size();
+	heap.push_back(vert);
+	heapifyUp(heap, value, fringe2heap, heap.size() - 1);
+}
+
+void heapDelete(std::vector<int>& heap, const std::vector<int>& value, std::vector<int>& fringe2heap, int idx)
+{
+	heap[idx] = heap.back();
+	fringe2heap[heap.back()] = idx;
+	heap.pop_back();
+	if (idx < heap.size())
+		heapifyDown(heap, value,fringe2heap, idx);
+}
+
+int dijkstraHeap(const std::vector<int>& G, int s, int t)
+{
+	if (s == t)
+		return -1;
+
+	std::vector<int> status(VERT_SIZE);						//status of vertices: 0 for unseen, 1 for fringe, 2 for intree
+	std::fill(status.begin(), status.end(), 0);
+
+	std::vector<int> dad(VERT_SIZE);
+	std::fill(dad.begin(), dad.end(), -1);
+
+	std::vector<int> cap(VERT_SIZE);
+	std::fill(cap.begin(), cap.end(), 0);
+
+	std::vector<int> fringe2heap(VERT_SIZE);
+
+	std::vector<int> heap(1);
+
+	status[s] = 2;
+
+	for (int j = 0; j < VERT_SIZE; j++)
+	{
+		if (G[s*VERT_SIZE + j] > 0)
+		{
+			status[j] = 1;
+			cap[j] = G[s*VERT_SIZE + j];
+			dad[j] = s;
+			heapInsert(heap, cap, fringe2heap, j);
+		}
+	}
+
+	while (status[t] != 2)
+	{
+		int v = heap[1];
+		status[v] = 2;
+		heapDelete(heap, cap, fringe2heap, 1);
+		for (int w = 0; w < VERT_SIZE; w++)
+			if (G[v*VERT_SIZE + w] > 0)
+				if (status[w] == 0)
+				{
+					status[w] = 1;
+					dad[w] = v;
+					cap[w] = std::min(cap[v], G[v*VERT_SIZE + w]);
+					heapInsert(heap, cap, fringe2heap, w);
+				}
+				else if (status[w] == 1 && cap[w] < std::min(cap[v], G[v*VERT_SIZE + w]))
+				{
+					dad[w] = v;
+					cap[w] = std::min(cap[v], G[v*VERT_SIZE + w]);
+					/*for (int j = 1; j < heap.size();j++)
+						if (heap[j] == w)
+						{
+							heapifyUp(heap, cap, j);
+							break;
+						}*/
+					heapifyUp(heap, cap, fringe2heap, fringe2heap[w]);
+				}
+	}
+
+	return cap[t];
+}
+
+int kruskalsearch(const std::vector<edge>& T, std::vector<int>& cap, int s, int t)
+{
+	for (int i = 0; i < T.size(); i++)
+	{
+		edge e = T[i];
+		if (e.v1 == s && cap[e.v2] == -1)
+		{
+			cap[e.v2] = std::min(cap[s], e.wt);
+			if (e.v2 == t)
+				return 1;
+			if (kruskalsearch(T, cap, e.v2, t))
+				return 1;
+		}
+		if (e.v2 == s && cap[e.v1] == -1)
+		{
+			cap[e.v1] = std::min(cap[s], e.wt);
+			if (e.v1 == t)
+				return 1;
+			if (kruskalsearch(T, cap, e.v1, t))
+				return 1;
+		}
+	}
+	return 0;
+}
+
+int kruskal(std::vector<edge>& E, int s, int t)
+{
+	std::vector<edge> T;
+
+	std::sort(E.begin(), E.end(), edgecomp);
+
+	std::vector<int> component(VERT_SIZE);
+	for (int i = 0; i < VERT_SIZE; i++)
+		component[i] = i;
+
+	for (int i = 0; i < E.size() && T.size() != (VERT_SIZE - 1); i++)
+	{
+		int r1 = E[i].v1;
+		int r2 = E[i].v2;
+		while (component[r1] != r1)
+			r1 = component[r1];
+		while (component[r2] != r2)
+			r2 = component[r2];
+		if (r1 != r2)
+		{
+			T.push_back(E[i]);
+			component[r1] = r2;
+		}
+	}
+
+	std::vector<int> cap(VERT_SIZE);
+	std::fill(cap.begin(), cap.end(), -1);
+	cap[s] = 100000;
+	kruskalsearch(T, cap, s, t);
+	return cap[t];
+}
+
+
+
+
+
+int main()
+{
+	std::vector<int> G(VERT_SIZE * VERT_SIZE);
+	std::vector<edge> E;
+	
+	clock_t start, finish;
+
+	for (int testCount = 0; testCount < 5; testCount++)
+	{
+		std::cout << "Test Group #" << testCount << std::endl;
+		std::cout << "Dijkstra  DijkstraHeap Kruskal (ms)" << std::endl;
+		std::cout << "Graph1" << std::endl;
+		constructGraph1(G, E);
+
+		for (int i = 0; i < 5; i++)
+		{
+			int s = rand() % VERT_SIZE;
+			int t = rand() % VERT_SIZE;
+			start = clock();
+			dijkstraNoHeap(G, s, t);
+			finish = clock();
+			std::cout << finish-start << "  ";
+			start = clock();
+			dijkstraHeap(G, s, t);
+			finish = clock();
+			std::cout << finish-start << "  ";
+			start = clock();
+			kruskal(E, s, t);
+			finish = clock();
+			std::cout << finish-start << " " << std::endl;
+		}
+
+		std::cout << "Graph2" << std::endl;
+		constructGraph2(G, E);
+
+		for (int i = 0; i < 5; i++)
+		{
+			int s = rand() % VERT_SIZE;
+			int t = rand() % VERT_SIZE;
+			start = clock();
+			dijkstraNoHeap(G, s, t);
+			finish = clock();
+			std::cout << finish - start << "  ";
+			start = clock();
+			dijkstraHeap(G, s, t);
+			finish = clock();
+			std::cout << finish - start << "  ";
+			start = clock();
+			kruskal(E, s, t);
+			finish = clock();
+			std::cout << finish - start << " " << std::endl;
+		}
+
+		std::cout << std::endl;
+	}
+
+	return 0;
+}

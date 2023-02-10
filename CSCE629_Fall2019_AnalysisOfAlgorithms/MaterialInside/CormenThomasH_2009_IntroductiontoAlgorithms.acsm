@@ -1,0 +1,37 @@
+<fulfillmentToken fulfillmentType="loan" auth="user" xmlns="http://ns.adobe.com/adept">
+  <distributor>urn:uuid:501e16ca-f45c-4a0c-9a9f-8a270a9f2ed6</distributor>
+  <operatorURL>http://rps2images.ebscohost.com/fulfillment</operatorURL>
+  <transaction>s8516548:12802132:343613:1566832509798:2027548313</transaction>
+  <expiration>2019-08-26T17:15:09-04:00</expiration>
+  <resourceItemInfo>
+    <resource>urn:uuid:d098c63b-64ff-4781-b166-c89ea85362fe</resource>
+    <resourceItem>1</resourceItem>
+    <metadata>
+      <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/">Introduction to Algorithms</dc:title>
+      <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Cormen, Thomas H.</dc:creator>
+      <dc:publisher xmlns:dc="http://purl.org/dc/elements/1.1/">MIT Press</dc:publisher>
+      <dc:format xmlns:dc="http://purl.org/dc/elements/1.1/">application/pdf</dc:format>
+      <dc:language xmlns:dc="http://purl.org/dc/elements/1.1/">eng</dc:language>
+    </metadata>
+    <licenseToken>
+      <resource>urn:uuid:d098c63b-64ff-4781-b166-c89ea85362fe</resource>
+      <permissions>
+        <display>
+          <until>2019-09-09T11:13:09-04:00</until>
+        </display>
+        <excerpt>
+          <until>2019-09-09T11:13:09-04:00</until>
+          <count initial="100"/>
+        </excerpt>
+        <print>
+          <until>2019-09-09T11:13:09-04:00</until>
+          <count initial="100"/>
+        </print>
+        <play>
+          <until>2019-09-09T11:13:09-04:00</until>
+        </play>
+      </permissions>
+    </licenseToken>
+  </resourceItemInfo>
+  <hmac>USzXRTW0TApKk6/jLVPcg9LEW7E=</hmac>
+</fulfillmentToken>

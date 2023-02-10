@@ -1,0 +1,102 @@
+# Hello World program in Python
+import time
+import random
+
+'''
+for i in range(0,10):
+    for j in range(i+1,10):
+        print(i+j)
+
+'''
+VERT_SIZE = 5000
+class VertDeg:
+    def __init__(self,index,degree):
+        self.index = index
+        self.degree = degree
+    def __repr__(self):
+        return repr((self.index, self.degree))
+
+
+class Edge:
+    def __init__(self,vertex1,vertex2,weight):
+        self.vertex1 = vertex1
+        self.vertex2 = vertex2
+        self.weight = weight
+    def __repr__(self):
+        return repr((self.vertex1, self.vertex2, self.weight))        
+
+def ConstructGraph1(G,E):
+    #G.clear()
+    E.clear()
+    
+    for i in range(0,VERT_SIZE):
+	    G[0].append(i*VERT_SIZE + i)
+
+    degrees = []
+    for i in range(0,VERT_SIZE) :
+        degs = VertDeg(i,6)
+        degrees.append(degs)
+
+    for i in range(0,VERT_SIZE) :
+        a = random.randint(0,VERT_SIZE-1)
+        b = random.randint(0,VERT_SIZE-1)
+        if a!=b :        
+            temp = degrees[a]
+            degrees[a] = degrees[b]
+            degrees[b] = temp
+        
+    while degrees[0].degree!=0 :
+        rd = random.randint(0,VERT_SIZE-1)# 0 to VERT_SIZE-1
+        if degrees[rd].degree != degrees[0].degree :
+            rd = random.randint(0,6-1)
+        if degrees[rd].degree ==degrees[0].degree :
+            temp = degrees[rd]
+            degrees[rd] = degrees[0]
+            degrees[0] = temp
+        for i in range(1,degrees[0].degree+1):
+            e = Edge(degrees[0].index,degrees[i].index,random.randint(1,100))
+            E.append(e)
+            G[e.weight].append(e.vertex2*VERT_SIZE+e.vertex1)
+            G[e.weight].append(e.vertex1*VERT_SIZE+e.vertex2)
+            degrees[i].degree = degrees[i].degree-1
+        degrees[0].degree = 0
+    
+        degrees.sort(key=lambda VertDeg: VertDeg.degree, reverse = True) 
+
+    return G,E
+
+def ConstructGraph2(G,E):
+    E.clear()
+    for i in range(0,VERT_SIZE) :
+	    G[0].append(i*VERT_SIZE + i)
+	
+    for i in range(0,VERT_SIZE) :
+	    for j in range(i+1,VERT_SIZE) :
+	        if random.randint(0,4)%5 == 0 :
+	            e = Edge(i,j,random.randint(1,100))
+	            E.append(e)
+	            G[e.weight].append(j*VERT_SIZE+i)
+	            G[e.weight].append(i*VERT_SIZE+j)
+    return G,E	            
+	    
+
+G=[[] for i in range(0,100+1)]
+E = []
+Graph1, Edge1 = ConstructGraph1(G,E)
+print(len(Edge1))
+
+G=[[] for i in range(0,100+1)]
+E = []
+Graph2, Edge2 = ConstructGraph2(G,E)
+print(len(Edge2))
+'''
+
+startime = time.time()
+vertDeg = VertDeg()
+vertDeg.AddIndex(5)
+vertDeg.AddIndex(3)
+print (vertDeg.index[0])
+
+endtime = time.time()-startime;
+print (endtime)
+'''

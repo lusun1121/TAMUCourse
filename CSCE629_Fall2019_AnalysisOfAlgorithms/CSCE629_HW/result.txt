@@ -1,0 +1,226 @@
+Data  1 :
+
+Time for constructing Graph 1: 11.734375
+
+ s= 2780 ,t= 4979 ,bandwidth= 78825.0
+
+ s= 2780 ,t= 4979 ,bandwidth= 78825.0
+
+ s= 2780 ,t= 4979 ,bandwidth= 78825.0
+
+ Dijkstra no heap time, Dijkstra with heap time, kruskal time:
+7.03125 4.0625 9.375
+
+
+
+
+
+Time for constructing Graph 2: 33.953125
+
+ s= 1779 ,t= 3035 ,bandwidth= 99873.0
+
+ s= 1779 ,t= 3035 ,bandwidth= 99873.0
+
+ s= 1779 ,t= 3035 ,bandwidth= 99873.0
+
+ Dijkstra no heap time, Dijkstra with heap time, kruskal time:
+0.890625 6.65625 19.90625
+
+
+
+
+
+Data  2 :
+
+Time for constructing Graph 1: 11.171875
+
+ s= 475 ,t= 1075 ,bandwidth= 75176.0
+
+ s= 475 ,t= 1075 ,bandwidth= 75176.0
+
+ s= 475 ,t= 1075 ,bandwidth= 75176.0
+
+ Dijkstra no heap time, Dijkstra with heap time, kruskal time:
+8.609375 3.21875 8.03125
+
+
+
+
+
+Time for constructing Graph 2: 31.625
+
+ s= 4567 ,t= 1825 ,bandwidth= 99766.0
+
+ s= 4567 ,t= 1825 ,bandwidth= 99766.0
+
+ s= 4567 ,t= 1825 ,bandwidth= 99766.0
+
+ Dijkstra no heap time, Dijkstra with heap time, kruskal time:
+26.953125 3.828125 14.34375
+
+
+
+
+
+Data  3 :
+
+Time for constructing Graph 1: 13.0
+
+ s= 4091 ,t= 1384 ,bandwidth= 71436.0
+
+ s= 4091 ,t= 1384 ,bandwidth= 71436.0
+
+ s= 4091 ,t= 1384 ,bandwidth= 71436.0
+
+ Dijkstra no heap time, Dijkstra with heap time, kruskal time:
+17.328125 9.4375 2.03125
+
+
+
+
+
+Time for constructing Graph 2: 33.703125
+
+ s= 940 ,t= 1500 ,bandwidth= 99872.0
+
+ s= 940 ,t= 1500 ,bandwidth= 99872.0
+
+ s= 940 ,t= 1500 ,bandwidth= 99872.0
+
+ Dijkstra no heap time, Dijkstra with heap time, kruskal time:
+11.484375 4.375 20.28125
+
+
+
+
+
+Data  4 :
+
+Time for constructing Graph 1: 11.234375
+
+ s= 3168 ,t= 325 ,bandwidth= 79384.0
+
+ s= 3168 ,t= 325 ,bandwidth= 79384.0
+
+ s= 3168 ,t= 325 ,bandwidth= 79384.0
+
+ Dijkstra no heap time, Dijkstra with heap time, kruskal time:
+3.921875 3.6875 4.15625
+
+
+
+
+
+Time for constructing Graph 2: 33.125
+
+ s= 2860 ,t= 3538 ,bandwidth= 99893.0
+
+ s= 2860 ,t= 3538 ,bandwidth= 99893.0
+
+ s= 2860 ,t= 3538 ,bandwidth= 99895.0
+
+ Dijkstra no heap time, Dijkstra with heap time, kruskal time:
+4.109375 2.890625 25.921875
+
+
+
+
+
+Data  5 :
+
+Time for constructing Graph 1: 11.734375
+
+ s= 1012 ,t= 2118 ,bandwidth= 59385.0
+
+ s= 1012 ,t= 2118 ,bandwidth= 59385.0
+
+ s= 1012 ,t= 2118 ,bandwidth= 59385.0
+
+ Dijkstra no heap time, Dijkstra with heap time, kruskal time:
+15.125 7.671875 9.65625
+
+
+
+
+
+Time for constructing Graph 2: 44.3125
+
+ s= 1982 ,t= 1737 ,bandwidth= 99836.0
+
+ s= 1982 ,t= 1737 ,bandwidth= 99836.0
+
+ s= 1982 ,t= 1737 ,bandwidth= 99836.0
+
+ Dijkstra no heap time, Dijkstra with heap time, kruskal time:
+19.59375 13.765625 26.125
+
+
+
+
+
+Graph1: Dijkstra no heap time, Dijkstra with heap time, kruskal time
+
+  7.03125 4.0625 9.375 
+
+  8.609375 3.21875 8.03125 
+
+  17.328125 9.4375 2.03125 
+
+  3.921875 3.6875 4.15625 
+
+  15.125 7.671875 9.65625 
+
+Graph2: Dijkstra no heap time, Dijkstra with heap time, kruskal time
+
+  0.890625 6.65625 19.90625 
+
+  26.953125 3.828125 14.34375 
+
+  11.484375 4.375 20.28125 
+
+  4.109375 2.890625 25.921875 
+
+  19.59375 13.765625 26.125 
+
+
+
+
+[10.403125, 5.615625, 6.65
+ 12.60625, 6.303125, 21.315625]
+
+
+
+
+
+
+
+
+
+#########################################################
+
+avgG1T1 = 0
+
+avgG1T2 = 0
+
+avgG1T3 = 0
+
+avgG2T1 = 0
+
+avgG2T2 = 0
+
+avgG2T3 = 0
+
+
+for i in range(0,5):
+    avgG1T1 = avgG1T1 + time1[2*i]
+    avgG1T2 = avgG1T2 + time2[2*i]
+    avgG1T3 = avgG1T3 + time3[2*i]
+    avgG2T1 = avgG2T1 + time1[2*i+1]
+    avgG2T2 = avgG2T2 + time2[2*i+1]
+    avgG2T3 = avgG2T3 + time3[2*i+1]
+    
+
+avgtime = [avgG1T1/5,avgG1T2/5,avgG1T3/5,avgG2T1/5,avgG2T2/5,avgG2T3/5]
+
+avgtime
+Out[55]: [10.403125, 5.615625, 6.65, 12.60625, 6.303125, 21.315625]
